@@ -312,6 +312,8 @@
     .cart-footer {
         padding: 1.5rem;
         border-top: 2px solid var(--gray);
+        max-height: 60vh; 
+        overflow-y: auto;
     }
     
     .cart-total {
@@ -567,7 +569,13 @@
         }
     ];
 
-    let cart = [];
+    let cart = JSON.parse(localStorage.getItem('burgerBiteCart')) || [];
+
+    function saveCart() {
+        localStorage.setItem('burgerBiteCart', JSON.stringify(cart));
+    }
+
+    updateCart();
     const whatsappNumber = "60175173282"; // Your number with Malaysia country code
 
     // Render Menu
@@ -600,6 +608,7 @@
             cart.push({...item, qty: 1});
         }
         updateCart();
+        saveCart();
         openCart();
     }
 
@@ -651,6 +660,7 @@
                 removeFromCart(id);
             } else {
                 updateCart();
+                saveCart();
             }
         }
     }
@@ -658,6 +668,7 @@
     function removeFromCart(id) {
         cart = cart.filter(i => i.id !== id);
         updateCart();
+        saveCart();
     }
 
     // Cart UI
@@ -735,6 +746,7 @@
         // Reset cart
         cart = [];
         updateCart();
+        saveCart();
         checkoutForm.reset();
         checkoutForm.classList.remove('active');
         closeCartSidebar();
